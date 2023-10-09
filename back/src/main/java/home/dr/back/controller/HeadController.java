@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class HeadController {
     private static final Logger LOG = LoggerFactory.getLogger(HeadController.class);
 

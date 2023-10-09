@@ -1,15 +1,31 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="head_div">
+    <hr>
+    <ProductComponent></ProductComponent>
+    <span>{{ products }}</span>
+    <button @click="getList()">GetList</button>
+
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ProductComponent from './components/ProductComponent.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    ProductComponent
+  },
+  data() {
+    return {
+      products: []
+    }
+  },
+  methods: {
+    getList() {
+      this.axios.get('http://localhost:8081/products')
+          .then(response => (this.products = response.data));
+    }
   }
 }
 </script>

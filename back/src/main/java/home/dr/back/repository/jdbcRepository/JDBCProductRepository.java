@@ -3,6 +3,7 @@ package home.dr.back.repository.jdbcRepository;
 import home.dr.back.model.Department;
 import home.dr.back.model.Product;
 import home.dr.back.repository.ProductRepository;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -20,7 +21,8 @@ public class JDBCProductRepository implements ProductRepository {
 
     @Override
     public int save(Product product) {
-        return 0;
+        return jdbcTemplate.update("INSERT INTO product (name, color,size,prise,productTypeId,departmentId) VALUES(?,?,?,?,?,?)",
+                new Object[]{product.getName(), product.getColor(), product.getSize(), product.getPrise(), product.getProductType().getId(), product.getDepartment().getId()});
     }
 
     @Override
@@ -45,12 +47,26 @@ public class JDBCProductRepository implements ProductRepository {
 
     @Override
     public List<Product> findByName(String name) {
-        return null;
+        try {
+            List<Product> productList = jdbcTemplate.query("SELECT * FROM product WHERE name=?",
+                    BeanPropertyRowMapper.newInstance(Product.class), name);
+
+            return productList;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
     public List<Product> findByDepartment(Department department) {
-        return null;
+        try {
+            List<Product> productList = jdbcTemplate.query("SELECT * FROM product WHERE departmentId=?",
+                    BeanPropertyRowMapper.newInstance(Product.class), department.getId());
+
+            return productList;
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
     }
 
     @Override

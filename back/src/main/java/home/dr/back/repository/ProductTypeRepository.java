@@ -16,7 +16,7 @@ public interface ProductTypeRepository {
 
     List<ProductType> findAll();
 
-    List<ProductType> findByName(String name);
+    ProductType findByName(String name);
 
     int deleteAll();
 }

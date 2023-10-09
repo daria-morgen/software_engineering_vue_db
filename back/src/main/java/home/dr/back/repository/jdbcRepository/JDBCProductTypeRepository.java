@@ -41,7 +41,7 @@ public class JDBCProductTypeRepository implements ProductTypeRepository {
     }
 
     @Override
-    public List<ProductType> findByName(String name) {
+    public ProductType findByName(String name) {
         return null;
     }
 

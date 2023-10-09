@@ -2,6 +2,8 @@ package home.dr.back.repository.jdbcRepository;
 
 import home.dr.back.model.Department;
 import home.dr.back.repository.DepartmentRepository;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -41,8 +43,13 @@ public class JDBCDepartmentRepository implements DepartmentRepository {
     }
 
     @Override
-    public List<Department> findByName(String name) {
-        return null;
+    public Department findByName(String name) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM department WHERE name=?",
+                    BeanPropertyRowMapper.newInstance(Department.class), name);
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        }
     }
 
     @Override

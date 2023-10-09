@@ -15,7 +15,7 @@ public interface DepartmentRepository {
 
     List<Department> findAll();
 
-    List<Department> findByName(String name);
+    Department findByName(String name);
 
     int deleteAll();
 }

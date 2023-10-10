@@ -11,6 +11,7 @@
         <span>Клиент: {{ client.name }}</span><br>
         <span>Телефон: {{ client.tel }}</span><br>
         <span>Действующая скидка: {{ client.discount }}%</span><br>
+        <hr>
         <span>Количество товара в корзине: {{ shopping_cart.length }}</span><br>
         <span>Сумма к оплате: {{ sum }}</span><br>
         <span>Сумма к оплате со скидкой: {{ sumWithDiscount }}</span>

@@ -1,21 +1,40 @@
 <template>
   <div class="head_div">
     <hr>
+
+    <h3>Отделы</h3>
+    <ul class="listOfCards">
+      <li v-for="(department, index) in departments" :key="index" class="department">
+        <h3 class="department-name">
+          <button @click="productsByDepartment(department.name)">{{ department.name }}</button>
+        </h3>
+      </li>
+    </ul>
+
+
+    <hr>
+    <h3>Товары</h3>
     <input class="search_input" v-model="searchValue"/>
     <button @click="searchProduct()">Поиск</button>
-    <br>
-    <br>
-    <ul class="listOfProducts">
+    <ul class="listOfCards">
       <li v-for="(product, index) in products" :key="index" class="product">
-        <h3 class="product-name">
+        <h3 class="card-name">
           {{ product.name }}
         </h3>
         <div class="product-price">
-          <span>{{ product.price }},000 rur</span>
+          <span>цена: {{ product.price }},000 руб</span>
           <!--        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>-->
         </div>
-        <div class="product-color">
-          <span>{{ product.color }}</span>
+        <div class="product-price" v-if="product.color!=null">
+          <span>цвет: {{ product.color }}</span>
+          <!--        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>-->
+        </div>
+        <div class="product-price" v-if="product.size>0">
+          <span>размер: {{ product.size }}</span>
+          <!--        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>-->
+        </div>
+        <div class="product-price" v-if="product.department!=null">
+          <span>отдел: {{ product.department.name }}</span>
           <!--        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>-->
         </div>
       </li>
@@ -35,7 +54,8 @@ export default {
   data() {
     return {
       searchValue: "",
-      products: []
+      products: [],
+      departments: []
     }
   },
   methods: {
@@ -49,15 +69,39 @@ export default {
         return null;
       }
     },
+
+    getAllDepartments() {
+      this.axios.get('http://localhost:8081/departments')
+          .then(response => (this.departments = response.data));
+
+      try {
+        this.departments = JSON.parse(this.departments)
+      } catch (error) {
+        return null;
+      }
+    },
+
+    productsByDepartment(name) {
+      this.axios.get('http://localhost:8081/productsByDepartment/' + name)
+          .then(response => (this.products = response.data));
+
+      try {
+        this.products = JSON.parse(this.products)
+      } catch (error) {
+        return null;
+      }
+    },
+
     searchProduct() {
       const urlString = 'http://localhost:8081/productByName/' + this.searchValue
 
       this.axios.get(urlString)
           .then(response => (this.products = response.data));
+
     }
   },
   beforeMount() {
-    this.getAllProducts()
+    this.getAllDepartments()
   }
 }
 </script>
@@ -76,7 +120,7 @@ export default {
   margin-right: 10px;
 }
 
-.listOfProducts {
+.listOfCards {
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
@@ -101,15 +145,10 @@ export default {
   border: solid;
 }
 
-.product-name {
+.card-name {
   font-size: 1.2em;
   font-weight: normal;
 }
-
-/*.product-name:hover {*/
-/*  cursor: pointer;*/
-/*  text-decoration: underline;*/
-/*}*/
 
 .product-price {
   width: 100%;

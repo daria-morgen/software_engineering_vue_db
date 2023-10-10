@@ -2,12 +2,15 @@ package home.dr.back.repository.jdbcRepository;
 
 import home.dr.back.model.Department;
 import home.dr.back.model.Product;
+import home.dr.back.model.ProductType;
 import home.dr.back.repository.ProductRepository;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -17,6 +20,33 @@ public class JDBCProductRepository implements ProductRepository {
 
     public JDBCProductRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    private static Product mapRow(ResultSet rs, int rowNum) {
+        Product product = new Product();
+        try {
+            product.setId(rs.getInt("id"));
+            product.setName(rs.getString("name"));
+            product.setColor(rs.getString("color"));
+            product.setSize(rs.getString("size"));
+            product.setPrice(rs.getDouble("price"));
+
+            final var productType = new ProductType();
+            productType.setId(rs.getInt("p_id"));
+            productType.setName(rs.getString("p_name"));
+
+            final var department = new Department();
+            department.setId(rs.getInt("d_id"));
+            department.setName(rs.getString("d_name"));
+
+            product.setProductType(productType);
+            product.setDepartment(department);
+
+            return product;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -42,19 +72,24 @@ public class JDBCProductRepository implements ProductRepository {
 
     @Override
     public List<Product> findAll() {
-        return jdbcTemplate.query("SELECT * from product", BeanPropertyRowMapper.newInstance(Product.class));
+        return this.jdbcTemplate.query(
+                "select pr.*, p.id as p_id, p.name as p_name, d.id as d_id, d.name as d_name\n" +
+                        "from product pr\n" +
+                        "         join producttype p on pr.producttypeid = p.id\n" +
+                        "         join department d on pr.departmentid = d.id\n" +
+                        "order by pr.id;",
+                JDBCProductRepository::mapRow);
     }
 
     @Override
     public List<Product> findByName(String name) {
-        try {
-            List<Product> productList = jdbcTemplate.query("SELECT * FROM product WHERE name=?",
-                    BeanPropertyRowMapper.newInstance(Product.class), name);
-
-            return productList;
-        } catch (IncorrectResultSizeDataAccessException e) {
-            return null;
-        }
+        return this.jdbcTemplate.query(
+                "select pr.*, p.id as p_id, p.name as p_name, d.id as d_id, d.name as d_name\n" +
+                        "from product pr\n" +
+                        "         join producttype p on pr.producttypeid = p.id\n" +
+                        "         join department d on pr.departmentid = d.id WHERE pr.name=?\n" +
+                        "order by pr.id;",
+                JDBCProductRepository::mapRow, name);
     }
 
     @Override

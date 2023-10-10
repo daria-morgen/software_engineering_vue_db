@@ -39,7 +39,10 @@ public class JDBCDepartmentRepository implements DepartmentRepository {
 
     @Override
     public List<Department> findAll() {
-        return null;
+        List<Department> departmentList = jdbcTemplate.query("SELECT * FROM department",
+                BeanPropertyRowMapper.newInstance(Department.class));
+
+        return departmentList;
     }
 
     @Override

@@ -112,6 +112,15 @@ public class Realization {
         }
     }
 
+    public String getAllDepartments() {
+        try {
+            return new ObjectMapper().writeValueAsString(departmentRepository.findAll());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
+
     public ResponseEntity<String> createClient(@RequestBody Client client) {
         try {
             LOG.info("Client post: " + client);
@@ -130,6 +139,5 @@ public class Realization {
             return e.getMessage();
         }
     }
-
 
 }

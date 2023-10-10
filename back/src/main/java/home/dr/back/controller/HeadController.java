@@ -42,12 +42,16 @@ public class HeadController {
         return realization.findProductsByDepartment(name);
     }
 
-
-
     @GetMapping("/products")
     public String getAllProducts() {
         return realization.getAllProducts();
     }
+
+    @GetMapping("/departments")
+    public String getAllDepartments() {
+        return realization.getAllDepartments();
+    }
+
 
     @PostMapping("/newClient")
     public ResponseEntity<String> createClient(@RequestBody Client client) {

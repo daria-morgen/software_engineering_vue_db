@@ -140,4 +140,12 @@ public class Realization {
         }
     }
 
+    public String getClientByName(String name) {
+        try {
+            return new ObjectMapper().writeValueAsString(clientRepository.findByName(name));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
 }

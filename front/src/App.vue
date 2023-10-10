@@ -1,8 +1,26 @@
 <template>
   <div class="head_div">
     <hr>
-
-    <h3>Отделы</h3>
+    <h3>Оформление заказа</h3>
+    <div>
+      <span>Поиск клиента: </span><input class="search_input" v-model="clientName">
+      <button @click="searchClient()">Поиск</button>
+      <br>
+      <br>
+      <div class="client_card" v-if="client!=null">
+        <span>Клиент: {{ client.name }}</span><br>
+        <span>Телефон: {{ client.tel }}</span><br>
+        <span>Действующая скидка: {{ client.discount }}%</span><br>
+        <span>Количество товара в корзине: {{ shopping_cart.length }}</span><br>
+        <span>Сумма к оплате: {{ sum }}</span><br>
+        <span>Сумма к оплате со скидкой: {{ sumWithDiscount }}</span>
+      </div>
+    </div>
+    <br>
+    <div>
+      <span>Поиск товара: </span><input class="search_input" v-model="searchValue"/>
+      <button @click="searchProduct()">Поиск</button>
+    </div>
     <ul class="listOfCards">
       <li v-for="(department, index) in departments" :key="index" class="department">
         <h3 class="department-name">
@@ -12,10 +30,6 @@
     </ul>
 
 
-    <hr>
-    <h3>Товары</h3>
-    <input class="search_input" v-model="searchValue"/>
-    <button @click="searchProduct()">Поиск</button>
     <ul class="listOfCards">
       <li v-for="(product, index) in products" :key="index" class="product">
         <h3 class="card-name">
@@ -37,6 +51,7 @@
           <span>отдел: {{ product.department.name }}</span>
           <!--        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>-->
         </div>
+        <button @click="addToShoppingCart(product)">+</button>
       </li>
     </ul>
     <hr>
@@ -54,8 +69,13 @@ export default {
   data() {
     return {
       searchValue: "",
+      client: null,
+      clientName: "",
       products: [],
-      departments: []
+      departments: [],
+      shopping_cart: [],
+      sum: 0,
+      sumWithDiscount: 0
     }
   },
   methods: {
@@ -98,6 +118,26 @@ export default {
       this.axios.get(urlString)
           .then(response => (this.products = response.data));
 
+    },
+    searchClient() {
+
+      if (this.clientName != "") {
+        const urlString = 'http://localhost:8081/clientByName/' + this.clientName
+
+        this.axios.get(urlString)
+            .then(response => (this.client = response.data)).finally(() => {
+          if (this.client === null)
+            alert("Клиент не найден")
+        });
+
+
+      }
+    },
+    addToShoppingCart(product) {
+      this.shopping_cart.push(product);
+      this.sum = this.sum + product.price;
+
+      this.sumWithDiscount = (this.sum - (this.sum / 100 * this.client.discount))
     }
   },
   beforeMount() {
@@ -143,6 +183,18 @@ export default {
   border-radius: 7px;
   /*border-color: black;*/
   border: solid;
+}
+
+.client_card {
+  width: 300px;
+  background-color: #fff;
+  list-style: none;
+  box-sizing: border-box;
+  padding: 1em;
+  /*margin: 1em 0;*/
+  border: solid;
+  align-items: center;
+  margin: auto;
 }
 
 .card-name {

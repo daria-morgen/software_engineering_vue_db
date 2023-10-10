@@ -14,7 +14,8 @@ CREATE TABLE Client
 (
     id BIGSERIAL PRIMARY KEY NOT NULL,
     name VARCHAR(255),
-    tel  numeric
+    tel  numeric,
+    discount integer
 );
 
 CREATE TABLE Product

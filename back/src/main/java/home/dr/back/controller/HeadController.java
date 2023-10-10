@@ -63,5 +63,10 @@ public class HeadController {
         return realization.getAllClients();
     }
 
+    @GetMapping("/clientByName/{name}")
+    public String getAllClientByName(@PathVariable("name") String name) {
+        return realization.getClientByName(name);
+    }
+
 
 }

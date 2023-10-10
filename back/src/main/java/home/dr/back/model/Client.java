@@ -18,6 +18,8 @@ public class Client {
 
     private long tel;
 
+    private int discount;
+
     public Client(String name, long tel) {
     }
 }

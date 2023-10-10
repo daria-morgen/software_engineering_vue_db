@@ -23,7 +23,7 @@ CREATE TABLE Product
     name          VARCHAR(255),
     color         VARCHAR(255),
     size          VARCHAR(255),
-    prise         NUMERIC(5, 3),
+    price         NUMERIC(5, 3),
     productTypeId INT,
     departmentId  INT,
     CONSTRAINT FK_product_productType FOREIGN KEY (productTypeId)

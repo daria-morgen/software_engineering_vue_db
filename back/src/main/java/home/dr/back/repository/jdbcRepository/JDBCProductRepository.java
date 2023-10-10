@@ -21,8 +21,8 @@ public class JDBCProductRepository implements ProductRepository {
 
     @Override
     public int save(Product product) {
-        return jdbcTemplate.update("INSERT INTO product (name, color,size,prise,productTypeId,departmentId) VALUES(?,?,?,?,?,?)",
-                new Object[]{product.getName(), product.getColor(), product.getSize(), product.getPrise(), product.getProductType().getId(), product.getDepartment().getId()});
+        return jdbcTemplate.update("INSERT INTO product (name, color,size,price,productTypeId,departmentId) VALUES(?,?,?,?,?,?)",
+                new Object[]{product.getName(), product.getColor(), product.getSize(), product.getPrice(), product.getProductType().getId(), product.getDepartment().getId()});
     }
 
     @Override

@@ -89,7 +89,7 @@ public class Realization {
      *
      * @return
      */
-    public String getDiscountedPrise() {
+    public String getDiscountedprice() {
         return null;
     }
 

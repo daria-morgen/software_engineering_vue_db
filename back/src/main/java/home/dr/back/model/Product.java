@@ -20,7 +20,7 @@ public class Product {
 
     private String size;
 
-    private double prise;
+    private double price;
 
     private ProductType productType;
 

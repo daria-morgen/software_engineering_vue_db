@@ -11,7 +11,11 @@
           {{ product.name }}
         </h3>
         <div class="product-price">
-          <span>{{ product.prise }}</span>
+          <span>{{ product.price }},000 rur</span>
+          <!--        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>-->
+        </div>
+        <div class="product-color">
+          <span>{{ product.color }}</span>
           <!--        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>-->
         </div>
       </li>

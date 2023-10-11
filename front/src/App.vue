@@ -15,6 +15,16 @@
         <span>Количество товара в корзине: {{ shopping_cart.length }}</span><br>
         <span>Сумма к оплате: {{ sum }}</span><br>
         <span>Сумма к оплате со скидкой: {{ sumWithDiscount }}</span>
+        <br>
+        <ul class="listOfCardsForCheck">
+          <li v-for="(shoppingCart, index) in shopping_cart" :key="index" class="shoppingCart">
+            <h3 class="department-name">
+              <span>{{ shoppingCart.name }} {{ shoppingCart.color }}</span>
+            </h3>
+          </li>
+        </ul>
+        <br>
+        <button @click="checkOut()">Оформить заказ</button>
       </div>
     </div>
     <br>
@@ -95,34 +105,24 @@ export default {
       this.axios.get('http://localhost:8081/departments')
           .then(response => (this.departments = response.data));
 
-      try {
-        this.departments = JSON.parse(this.departments)
-      } catch (error) {
-        return null;
-      }
     },
 
     productsByDepartment(name) {
       this.axios.get('http://localhost:8081/productsByDepartment/' + name)
           .then(response => (this.products = response.data));
-
-      try {
-        this.products = JSON.parse(this.products)
-      } catch (error) {
-        return null;
-      }
     },
 
     searchProduct() {
-      const urlString = 'http://localhost:8081/productByName/' + this.searchValue
-
-      this.axios.get(urlString)
-          .then(response => (this.products = response.data));
+      if (this.searchValue !== "") {
+        const urlString = 'http://localhost:8081/productByName/' + this.searchValue
+        this.axios.get(urlString)
+            .then(response => (this.products = response.data));
+      }
 
     },
     searchClient() {
 
-      if (this.clientName != "") {
+      if (this.clientName !== "") {
         const urlString = 'http://localhost:8081/clientByName/' + this.clientName
 
         this.axios.get(urlString)
@@ -131,7 +131,7 @@ export default {
             alert("Клиент не найден")
         });
 
-
+        this.shopping_cart = []
       }
     },
     addToShoppingCart(product) {
@@ -139,7 +139,12 @@ export default {
       this.sum = this.sum + product.price;
 
       this.sumWithDiscount = (this.sum - (this.sum / 100 * this.client.discount))
-    }
+    },
+
+    checkOut() {
+
+
+    },
   },
   beforeMount() {
     this.getAllDepartments()

@@ -1,6 +1,7 @@
 package home.dr.back.controller;
 
 import home.dr.back.model.Client;
+import home.dr.back.model.Product;
 import home.dr.back.service.Realization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +35,18 @@ public class HeadController {
 
     /**
      * - показывать ассортимент выбранного отдела;
+     *
      * @param name
      * @return
      */
     @GetMapping("/productsByDepartment/{name}")
     public String getProductsByDepartment(@PathVariable("name") String name) {
         return realization.findProductsByDepartment(name);
+    }
+
+    @PostMapping("/newProduct")
+    public ResponseEntity<String> createProduct(@RequestBody Product product) {
+        return realization.createProduct(product);
     }
 
     @GetMapping("/products")

@@ -3,6 +3,7 @@ package home.dr.back.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import home.dr.back.model.Client;
+import home.dr.back.model.Product;
 import home.dr.back.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,6 +104,16 @@ public class Realization {
         return null;
     }
 
+    public ResponseEntity<String> createProduct(Product product) {
+        try {
+            LOG.info("Product post: " + product);
+            productRepository.save(product);
+            return new ResponseEntity<>("Client was created successfully.", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public String getAllProducts() {
         try {
             return new ObjectMapper().writeValueAsString(productRepository.findAll());
@@ -148,4 +159,6 @@ public class Realization {
             return e.getMessage();
         }
     }
+
+
 }

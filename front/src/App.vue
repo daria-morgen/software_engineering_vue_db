@@ -48,21 +48,68 @@
         </h3>
         <div class="product-price">
           <span>цена: {{ product.price }},000 руб</span>
-          <!--        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>-->
         </div>
         <div class="product-price" v-if="product.color!=null">
           <span>цвет: {{ product.color }}</span>
-          <!--        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>-->
         </div>
         <div class="product-price" v-if="product.size>0">
           <span>размер: {{ product.size }}</span>
-          <!--        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>-->
         </div>
         <div class="product-price" v-if="product.department!=null">
           <span>отдел: {{ product.department.name }}</span>
-          <!--        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>-->
         </div>
         <button @click="addToShoppingCart(product)">+</button>
+      </li>
+      <li class="product">
+        <h3 class="card-name">Создать новый товар</h3>
+        <table class="create_product">
+          <tr>
+            <td>
+              <span>Название: </span>
+            </td>
+            <td>
+              <input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>цена: </span>
+            </td>
+            <td>
+              <input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>Тип товара: </span>
+            </td>
+            <td>
+              <input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span>Отдел: </span>
+            </td>
+            <td>
+              <input>
+            </td>
+          </tr>
+        </table>
+
+        <!--        <div class="product-price" v-if="product.color!=null">-->
+        <!--          <span>цвет: {{ product.color }}</span>-->
+        <!--          &lt;!&ndash;        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>&ndash;&gt;-->
+        <!--        </div>-->
+        <!--        <div class="product-price" v-if="product.size>0">-->
+        <!--          <span>размер: {{ product.size }}</span>-->
+        <!--          &lt;!&ndash;        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>&ndash;&gt;-->
+        <!--        </div>-->
+        <!--        <div class="product-price" v-if="product.department!=null">-->
+        <!--          <span>отдел: {{ product.department.name }}</span>-->
+        <!--          &lt;!&ndash;        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>&ndash;&gt;-->
+        <!--        </div>-->
+        <button>Создать</button>
       </li>
     </ul>
     <hr>
@@ -215,4 +262,8 @@ export default {
   justify-content: space-between;
   margin-bottom: .5em;
 }
+.create_product td{
+padding: 5px;
+}
+
 </style>

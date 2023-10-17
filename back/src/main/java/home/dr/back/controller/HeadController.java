@@ -44,8 +44,9 @@ public class HeadController {
         return realization.findProductsByDepartment(name);
     }
 
-    @PostMapping("/newProduct")
+    @PostMapping("/newProduct" )
     public ResponseEntity<String> createProduct(@RequestBody Product product) {
+        LOG.info("New product: " + product);
         return realization.createProduct(product);
     }
 
@@ -57,6 +58,11 @@ public class HeadController {
     @GetMapping("/departments")
     public String getAllDepartments() {
         return realization.getAllDepartments();
+    }
+
+    @GetMapping("/productTypes")
+    public String getAllProductTypes() {
+        return realization.getAllProductTypes();
     }
 
 

@@ -68,7 +68,7 @@
               <span>Название: </span>
             </td>
             <td>
-              <input>
+              <input v-model="newProduct.name">
             </td>
           </tr>
           <tr>
@@ -76,40 +76,33 @@
               <span>цена: </span>
             </td>
             <td>
-              <input>
+              <input v-model="newProduct.price">
             </td>
           </tr>
           <tr>
+            <td>Отдел:</td>
             <td>
-              <span>Тип товара: </span>
-            </td>
-            <td>
-              <input>
+              <select v-model="newProduct.department">
+                <option v-for="(department, index) in departments" :key="index">
+                  {{ department }}
+                </option>
+              </select>
             </td>
           </tr>
           <tr>
+            <td>Тип товара:</td>
             <td>
-              <span>Отдел: </span>
-            </td>
-            <td>
-              <input>
+              <select v-model="newProduct.productType">
+                <option v-for="(productType, index) in productTypes" :key="index">
+                  {{ productType }}
+                </option>
+              </select>
             </td>
           </tr>
-        </table>
 
-        <!--        <div class="product-price" v-if="product.color!=null">-->
-        <!--          <span>цвет: {{ product.color }}</span>-->
-        <!--          &lt;!&ndash;        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>&ndash;&gt;-->
-        <!--        </div>-->
-        <!--        <div class="product-price" v-if="product.size>0">-->
-        <!--          <span>размер: {{ product.size }}</span>-->
-        <!--          &lt;!&ndash;        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>&ndash;&gt;-->
-        <!--        </div>-->
-        <!--        <div class="product-price" v-if="product.department!=null">-->
-        <!--          <span>отдел: {{ product.department.name }}</span>-->
-        <!--          &lt;!&ndash;        <span>10 x {{ Math.round(product.price / 10) }}, 00 </span>&ndash;&gt;-->
-        <!--        </div>-->
-        <button>Создать</button>
+        </table>
+        <button @click="createProduct()">Создать</button>
+
       </li>
     </ul>
     <hr>
@@ -131,9 +124,20 @@ export default {
       clientName: "",
       products: [],
       departments: [],
+      productTypes: [],
       shopping_cart: [],
       sum: 0,
-      sumWithDiscount: 0
+      sumWithDiscount: 0,
+      newProduct: {
+        name: "",
+        price: "",
+        color: "",
+        size: "",
+        department: {},
+        productType: {}
+      }
+
+
     }
   },
   methods: {
@@ -152,6 +156,10 @@ export default {
       this.axios.get('http://localhost:8081/departments')
           .then(response => (this.departments = response.data));
 
+    },
+    getAllProductTypes() {
+      this.axios.get('http://localhost:8081/productTypes')
+          .then(response => (this.productTypes = response.data));
     },
 
     productsByDepartment(name) {
@@ -192,9 +200,34 @@ export default {
 
 
     },
+    createProduct() {
+      const urlString = 'http://localhost:8081/newProduct'
+      console.log(this.productToJson(this.newProduct))
+
+      this.axios.post(urlString, this.productToJson(this.newProduct),
+          {
+            headers: {
+              "content-type": "application/json",
+            },
+          }
+      );
+    },
+    productToJson(productToJson) {
+      let currentJson = "{\n" +
+          "    \"name\":\"" + productToJson.name + "\",\n" +
+          "    \"price\":\"" + productToJson.price + "\",\n" +
+          "    \"color\":\"\",\n" +
+          "    \"size\":\"\",\n" +
+          "    \"productType\": {\"id\": 4, \"name\": \"Игрушка\"},\n" +
+          "    \"department\": {\"id\": 2, \"name\": \"Игрушки\"}\n" +
+          "}";
+
+      return currentJson;
+    }
   },
   beforeMount() {
     this.getAllDepartments()
+    this.getAllProductTypes()
   }
 }
 </script>
@@ -262,8 +295,9 @@ export default {
   justify-content: space-between;
   margin-bottom: .5em;
 }
-.create_product td{
-padding: 5px;
-}
 
+.create_product td {
+  padding: 5px;
+  /*width: 100px;*/
+}
 </style>

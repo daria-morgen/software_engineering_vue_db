@@ -2,6 +2,7 @@ package home.dr.back.repository.jdbcRepository;
 
 import home.dr.back.model.ProductType;
 import home.dr.back.repository.ProductTypeRepository;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -37,7 +38,10 @@ public class JDBCProductTypeRepository implements ProductTypeRepository {
 
     @Override
     public List<ProductType> findAll() {
-        return null;
+        List<ProductType> productTypes = jdbcTemplate.query("SELECT * FROM producttype",
+                BeanPropertyRowMapper.newInstance(ProductType.class));
+
+        return productTypes;
     }
 
     @Override

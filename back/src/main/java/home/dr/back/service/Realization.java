@@ -108,9 +108,9 @@ public class Realization {
         try {
             LOG.info("Product post: " + product);
             productRepository.save(product);
-            return new ResponseEntity<>("Client was created successfully.", HttpStatus.CREATED);
+            return new ResponseEntity<>("Product was created successfully.", HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -161,4 +161,12 @@ public class Realization {
     }
 
 
+    public String getAllProductTypes() {
+        try {
+            return new ObjectMapper().writeValueAsString(productTypeRepository.findAll());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
 }

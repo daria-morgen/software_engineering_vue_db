@@ -1,121 +1,89 @@
 <template>
   <div class="head_div">
     <hr>
-    <h3>Оформление заказа</h3>
-    <div>
-      <span>Поиск клиента: </span><input class="search_input" v-model="clientName">
-      <button @click="searchClient()">Поиск</button>
-      <br>
-      <br>
-      <div class="client_card" v-if="client!=null">
-        <span>Клиент: {{ client.name }}</span><br>
-        <span>Телефон: {{ client.tel }}</span><br>
-        <span>Действующая скидка: {{ client.discount }}%</span><br>
-        <hr>
-        <span>Количество товара в корзине: {{ shopping_cart.length }}</span><br>
-        <span>Сумма к оплате: {{ sum }}</span><br>
-        <span>Сумма к оплате со скидкой: {{ sumWithDiscount }}</span>
-        <br>
-        <ul class="listOfCardsForCheck">
-          <li v-for="(shoppingCart, index) in shopping_cart" :key="index" class="shoppingCart">
-            <h3 class="department-name">
-              <span>{{ shoppingCart.name }} {{ shoppingCart.color }}</span>
-            </h3>
-          </li>
-        </ul>
-        <br>
-        <button @click="checkOut()">Оформить заказ</button>
+    <div class="order_registration_head">
+      <div class="order_registration">
+
+        <h3>Оформление заказа</h3>
+        <div>
+          <span>Поиск клиента: </span><input class="search_input" v-model="clientName">
+          <button @click="searchClient()">Поиск</button>
+          <br>
+          <br>
+          <div class="client_card" v-if="client!=null">
+            <span>Клиент: {{ client.name }}</span><br>
+            <span>Телефон: {{ client.tel }}</span><br>
+            <span>Действующая скидка: {{ client.discount }}%</span><br>
+            <hr>
+            <span>Количество товара в корзине: {{ shopping_cart.length }}</span><br>
+            <span>Сумма к оплате: {{ sum }}</span><br>
+            <span>Сумма к оплате со скидкой: {{ sumWithDiscount }}</span>
+            <br>
+            <ul class="listOfCardsForCheck">
+              <li v-for="(shoppingCart, index) in shopping_cart" :key="index" class="shoppingCart">
+                <h3 class="department-name">
+                  <span>{{ shoppingCart.name }} {{ shoppingCart.color }}</span>
+                </h3>
+              </li>
+            </ul>
+            <br>
+            <button @click="checkOut()">Оформить заказ</button>
+          </div>
+        </div>
       </div>
     </div>
-    <br>
-    <div>
-      <span>Поиск товара: </span><input class="search_input" v-model="searchValue"/>
-      <button @click="searchProduct()">Поиск</button>
-    </div>
-    <ul class="listOfCards">
-      <li v-for="(department, index) in departments" :key="index" class="department">
-        <h3 class="department-name">
-          <button @click="productsByDepartment(department.name)">{{ department.name }}</button>
-        </h3>
-      </li>
-    </ul>
-
-
-    <ul class="listOfCards">
-      <li v-for="(product, index) in products" :key="index" class="product">
-        <h3 class="card-name">
-          {{ product.name }}
-        </h3>
-        <div class="product-price">
-          <span>цена: {{ product.price }},000 руб</span>
-        </div>
-        <div class="product-price" v-if="product.color!=null">
-          <span>цвет: {{ product.color }}</span>
-        </div>
-        <div class="product-price" v-if="product.size>0">
-          <span>размер: {{ product.size }}</span>
-        </div>
-        <div class="product-price" v-if="product.department!=null">
-          <span>отдел: {{ product.department.name }}</span>
-        </div>
-        <button @click="addToShoppingCart(product)">+</button>
-      </li>
-      <li class="product">
-        <h3 class="card-name">Создать новый товар</h3>
-        <table class="create_product">
-          <tr>
-            <td>
-              <span>Название: </span>
-            </td>
-            <td>
-              <input v-model="newProduct.name">
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span>цена: </span>
-            </td>
-            <td>
-              <input v-model="newProduct.price">
-            </td>
-          </tr>
-          <tr>
-            <td>Отдел:</td>
-            <td>
-              <select v-model="newProduct.department">
-                <option v-for="(department, index) in departments" :key="index">
-                  {{ department }}
-                </option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>Тип товара:</td>
-            <td>
-              <select v-model="newProduct.productType">
-                <option v-for="(productType, index) in productTypes" :key="index">
-                  {{ productType }}
-                </option>
-              </select>
-            </td>
-          </tr>
-
-        </table>
-        <button @click="createProduct()">Создать</button>
-
-      </li>
-    </ul>
     <hr>
-
+    <div class="products_section">
+      <div>
+        <div class="search_products_section">
+          <span>Поиск товара: </span><input class="search_input" v-model="searchValue"/>
+          <button @click="searchProduct()">Поиск</button>
+        </div>
+      </div>
+      <ul class="listOfCards">
+        <li v-for="(department, index) in departments" :key="index" class="department">
+          <h3 class="department-name">
+            <button @click="productsByDepartment(department.name)">{{ department.name }}</button>
+          </h3>
+        </li>
+      </ul>
+      <ul class="listOfCards">
+        <li v-for="(product, index) in products" :key="index" class="product">
+          <h3 class="card-name">
+            {{ product.name }}
+          </h3>
+          <div class="product-price">
+            <span>цена: {{ product.price }},000 руб</span>
+          </div>
+          <div class="product-price" v-if="product.color!=null">
+            <span>цвет: {{ product.color }}</span>
+          </div>
+          <div class="product-price" v-if="product.size>0">
+            <span>размер: {{ product.size }}</span>
+          </div>
+          <div class="product-price" v-if="product.department!=null">
+            <span>отдел: {{ product.department.name }}</span>
+          </div>
+          <button @click="addToShoppingCart(product)" :disabled="client===null">+</button>
+        </li>
+      </ul>
+    </div>
+    <hr>
+    <NewProductComponent
+        :productTypes="productTypes"
+        :departments="departments">
+    </NewProductComponent>
+    <hr>
   </div>
 </template>
 
 <script>
+import NewProductComponent from "./components/NewProductComponent"
 
 export default {
   name: 'App',
   components: {
-    // ProductComponent
+    NewProductComponent
   },
   data() {
     return {
@@ -127,17 +95,7 @@ export default {
       productTypes: [],
       shopping_cart: [],
       sum: 0,
-      sumWithDiscount: 0,
-      newProduct: {
-        name: "",
-        price: "",
-        color: "",
-        size: "",
-        department: {},
-        productType: {}
-      }
-
-
+      sumWithDiscount: 0
     }
   },
   methods: {
@@ -195,34 +153,9 @@ export default {
 
       this.sumWithDiscount = (this.sum - (this.sum / 100 * this.client.discount))
     },
-
     checkOut() {
 
 
-    },
-    createProduct() {
-      const urlString = 'http://localhost:8081/newProduct'
-      console.log(this.productToJson(this.newProduct))
-
-      this.axios.post(urlString, this.productToJson(this.newProduct),
-          {
-            headers: {
-              "content-type": "application/json",
-            },
-          }
-      );
-    },
-    productToJson(productToJson) {
-      let currentJson = "{\n" +
-          "    \"name\":\"" + productToJson.name + "\",\n" +
-          "    \"price\":\"" + productToJson.price + "\",\n" +
-          "    \"color\":\"\",\n" +
-          "    \"size\":\"\",\n" +
-          "    \"productType\": {\"id\": 4, \"name\": \"Игрушка\"},\n" +
-          "    \"department\": {\"id\": 2, \"name\": \"Игрушки\"}\n" +
-          "}";
-
-      return currentJson;
     }
   },
   beforeMount() {
@@ -300,4 +233,25 @@ export default {
   padding: 5px;
   /*width: 100px;*/
 }
+
+.order_registration {
+  width: 300px;
+  margin: auto;
+}
+
+.order_registration_head {
+  background-color: #fff0f5;
+}
+
+header {
+  background-color: #fff0f0;
+}
+
+.search_products_section {
+  text-align: right;
+}
+.products_section{
+  background-color: #f0f0ff;
+}
+
 </style>

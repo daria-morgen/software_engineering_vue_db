@@ -50,6 +50,7 @@
         </tr>
         </tbody>
       </table>
+      <br>
       <button @click="createProduct()">Создать</button>
     </div>
   </div>
@@ -73,7 +74,7 @@ export default {
       }
     }
   },
-  metdods: {
+  methods: {
     createProduct() {
       const urlString = 'http://localhost:8081/newProduct'
       console.log(this.productToJson(this.newProduct))
@@ -103,13 +104,18 @@ export default {
 <style>
 .new_product {
   margin: auto;
-  width: 400px;
+  width: 1000px;
+  border: solid;
+  background-color: #f0f0e6;
+  border-radius: 7px;
+
 }
 .new_product thead{
   text-align: center;
 }
 .new_product table {
   text-align: left;
+  margin: auto;
 }
 .new_product td{
   padding: 10px;
@@ -122,7 +128,7 @@ export default {
   width: 200px;
 }
 .new_product_head{
-  background-color: #f0f0e6;
+  padding: 10px;
 }
 
 </style>

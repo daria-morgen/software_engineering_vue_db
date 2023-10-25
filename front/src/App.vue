@@ -1,6 +1,6 @@
 <template>
   <div class="head_div">
-    <hr>
+    <br>
     <div class="order_registration_head">
       <div class="order_registration">
 
@@ -14,7 +14,7 @@
             <span>Клиент: {{ client.name }}</span><br>
             <span>Телефон: {{ client.tel }}</span><br>
             <span>Действующая скидка: {{ client.discount }}%</span><br>
-            <hr>
+            <br>
             <span>Количество товара в корзине: {{ shopping_cart.length }}</span><br>
             <span>Сумма к оплате: {{ sum }}</span><br>
             <span>Сумма к оплате со скидкой: {{ sumWithDiscount }}</span>
@@ -32,21 +32,22 @@
         </div>
       </div>
     </div>
-    <hr>
-    <div class="products_section">
-      <div>
-        <div class="search_products_section">
-          <span>Поиск товара: </span><input class="search_input" v-model="searchValue"/>
-          <button @click="searchProduct()">Поиск</button>
-        </div>
+    <br>
+    <div class="search_products_section_head">
+      <div class="search_products_section">
+        <span>Поиск товара: </span><input class="search_input" v-model="searchValue"/>
+        <button @click="searchProduct()">Поиск</button>
+        <ul class="listOfCards">
+          <li v-for="(department, index) in departments" :key="index" class="department">
+            <h3 class="department-name">
+              <button @click="productsByDepartment(department.name)">{{ department.name }}</button>
+            </h3>
+          </li>
+        </ul>
       </div>
-      <ul class="listOfCards">
-        <li v-for="(department, index) in departments" :key="index" class="department">
-          <h3 class="department-name">
-            <button @click="productsByDepartment(department.name)">{{ department.name }}</button>
-          </h3>
-        </li>
-      </ul>
+    </div>
+
+    <div class="products_section">
       <ul class="listOfCards">
         <li v-for="(product, index) in products" :key="index" class="product">
           <h3 class="card-name">
@@ -68,12 +69,12 @@
         </li>
       </ul>
     </div>
-    <hr>
+    <br>
     <NewProductComponent
         :productTypes="productTypes"
         :departments="departments">
     </NewProductComponent>
-    <hr>
+    <br>
   </div>
 </template>
 
@@ -235,23 +236,46 @@ export default {
 }
 
 .order_registration {
-  width: 300px;
+  width: 1000px;
   margin: auto;
+  border: solid;
+  border-radius: 7px;
+  background-color: #fff0f5;
+
 }
 
 .order_registration_head {
-  background-color: #fff0f5;
+  align-items: center;
+
 }
 
 header {
-  background-color: #fff0f0;
+  /*background-color: #fff0f0;*/
+  /*border: solid;*/
+  text-align: center;
+  /*border-radius: 10px;*/
+}
+
+.search_products_section_head {
+
+  /*align-items: center;*/
 }
 
 .search_products_section {
   text-align: right;
+  margin: auto;
+  width: 1000px;
+  border: solid;
+  border-radius: 7px;
+  /*width: 600px;*/
+  padding: 10px;
+  background-color: rgba(200, 255, 200, 0.42);
 }
-.products_section{
-  background-color: #f0f0ff;
+
+.products_section {
+  /*background-color: #f0f0ff;*/
+
+
 }
 
 </style>
